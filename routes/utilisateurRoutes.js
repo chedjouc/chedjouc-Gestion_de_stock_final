@@ -12,10 +12,13 @@ import {
 
 const router = express.Router();
 
+// LISTE
 router.get('/', requireAuth, listUtilisateurs);
 
+// FORMULAIRE AJOUT
 router.get('/add', requireAuth, renderAddUtilisateur);
 
+// AJOUTER
 router.post(
   '/',
   requireAuth,
@@ -29,8 +32,10 @@ router.post(
   addUtilisateur
 );
 
+// FORMULAIRE MODIF
 router.get('/:id/edit', requireAuth, renderEditUtilisateur);
 
+// MODIFIER
 router.post(
   '/:id',
   requireAuth,
@@ -43,6 +48,7 @@ router.post(
   editUtilisateur
 );
 
-router.delete('/:id', requireAuth, deleteUtilisateur);
+// SUPPRIMER (version POST pour compatibilité HTML)
+router.post('/:id/delete', requireAuth, deleteUtilisateur);
 
 export default router;
