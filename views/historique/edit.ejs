@@ -1,0 +1,87 @@
+<%- include('../partials/header') %>
+
+<div class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3 mb-4">
+    <div>
+        <h2 class="form-title"><i class="fas fa-edit me-2"></i>Modifier un mouvement</h2>
+        <p class="form-subtitle">Mettez à jour les informations d'un mouvement de stock.</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xl-8 col-lg-9">
+        <div class="card form-card">
+            <div class="card-body">
+                <% if (errors && errors.length > 0) { %>
+                    <div class="alert alert-danger">
+                        <% errors.forEach(error => { %>
+                            <div><%= error.msg %></div>
+                        <% }); %>
+                    </div>
+                <% } %>
+
+                <form method="POST" action="/historique/<%= historique.id %>">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="produitId" class="form-label">Produit *</label>
+                            <select class="form-select" id="produitId" name="produitId" required>
+                                <% if (produits && produits.length > 0) { %>
+                                    <% produits.forEach(produit => { %>
+                                        <option value="<%= produit.id %>" <%= historique.produitId == produit.id ? 'selected' : '' %>>
+                                            <%= produit.nom %>
+                                        </option>
+                                    <% }); %>
+                                <% } %>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="type" class="form-label">Type de mouvement *</label>
+                            <select class="form-select" id="type" name="type" required>
+                                <option value="entree" <%= historique.type === 'entree' ? 'selected' : '' %>>Entrée</option>
+                                <option value="sortie" <%= historique.type === 'sortie' ? 'selected' : '' %>>Sortie</option>
+                                <option value="ajustement" <%= historique.type === 'ajustement' ? 'selected' : '' %>>Ajustement</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="quantite" class="form-label">Quantité *</label>
+                            <input type="number" class="form-control" id="quantite" name="quantite" min="1" value="<%= historique.quantite %>" required>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="utilisateurId" class="form-label">Utilisateur</label>
+                            <select class="form-select" id="utilisateurId" name="utilisateurId">
+                                <option value="">-- Sélectionner --</option>
+                                <% if (utilisateurs && utilisateurs.length > 0) { %>
+                                    <% utilisateurs.forEach(utilisateur => { %>
+                                        <option value="<%= utilisateur.id %>" <%= historique.utilisateurId == utilisateur.id ? 'selected' : '' %>>
+                                            <%= utilisateur.prenom %> <%= utilisateur.nom %>
+                                        </option>
+                                    <% }); %>
+                                <% } %>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="raison" class="form-label">Raison / commentaire</label>
+                        <textarea class="form-control" id="raison" name="raison" rows="3"><%= historique.raison || '' %></textarea>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-2"></i>Mettre à jour
+                        </button>
+                        <a href="/api/stock/historique" class="btn btn-secondary">
+                            <i class="fas fa-times me-2"></i>Annuler
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../partials/footer') %>
